@@ -14,30 +14,35 @@ class UserForm {
     this.registerFormCallback = (f) => f;
   }
 
+  //выводит сообщение с ошибкой при авторизации
   setLoginErrorMessage(message) {
     this.loginErrorMessageBox.innerText = message;
     this.loginErrorMessageBox.style.display = 'block';
     setTimeout(() => { this.loginErrorMessageBox.style.display = 'none'; }, 5000);
   }
 
+  //выводит сообщение с ошибкой при регистрации
   setRegisterErrorMessage(message) {
     this.registerErrorMessageBox.innerText = message;
     this.registerErrorMessageBox.style.display = 'block';
     setTimeout(() => { this.registerErrorMessageBox.style.display = 'none'; }, 5000);
   }
 
+  //обработчик события сабмита формы авторизации
   loginFormAction(event) {
     event.preventDefault();
     this.loginFormCallback(this.getData(this.loginForm));
     this.loginForm.reset();
   }
 
+  //обработчик события сабмита формы регистрации
   registerFormAction(event) {
     event.preventDefault();
     this.registerFormCallback(this.getData(this.registerForm));
     this.registerForm.reset();
   }
 
+  //метод получения данных из переданной формы
   getData(form) {
     const login = form.querySelector('[name="email"]').value;
     const password = form.querySelector('[name="password"]').value;
