@@ -11,11 +11,23 @@ logoutButton.action = () => {
 
 //Получение информации о пользователе
 ApiConnector.current((data) => {
-  console.log(`data`, data);
   if (data.success) {
-    console.log(`data.data`, data.data);
     ProfileWidget.showProfile(data.data);
   }
 })
 
+//Получение текущих курсов валюты
+const ratesBoard = new RatesBoard();
 
+function updateRates() {
+  ApiConnector.getStocks((data) => {
+    if (data.success) {
+      ratesBoard.clearTable();
+      ratesBoard.fillTable(data.data);
+    }
+  }); 
+}
+
+updateRates();
+
+setInterval(updateRates, 60000);
