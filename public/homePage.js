@@ -8,3 +8,14 @@ logoutButton.action = () => {
     }
   })
 }
+
+//Получение информации о пользователе
+ApiConnector.current((data) => {
+  console.log(`data`, data);
+  if (data.success) {
+    console.log(`data.data`, data.data);
+    ProfileWidget.showProfile(data.data);
+  }
+})
+
+
