@@ -31,3 +31,18 @@ function updateRates() {
 updateRates();
 
 setInterval(updateRates, 60000);
+
+//Операции с деньгами
+const moneyManager = new MoneyManager();
+
+//Пополнение баланса
+moneyManager.addMoneyCallback = (data) => {
+  ApiConnector.addMoney(data, (response) => {
+    if (response.success) {
+      ProfileWidget.showProfile(response.data);
+      moneyManager.setMessage(true, "Баланс успешно пополнен!"); // Сообщение об успехе
+    } else {
+      moneyManager.setMessage(false, response.error); // Вывод ошибки от сервера
+    }
+  })
+}
