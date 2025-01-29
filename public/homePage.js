@@ -82,4 +82,17 @@ ApiConnector.getFavorites((response) => {
   }
 });
 
-
+//Добавление пользователя в список избранных
+favoritesWidget.addUserCallback = (data) => {
+  ApiConnector.addUserToFavorites(data, (response) => {
+    console.log(`addUserToFavorites(data, (response)`, data, response);
+    if (response.success) {
+      favoritesWidget.clearTable();
+      favoritesWidget.fillTable(response.data);
+      moneyManager.updateUsersList(response.data);
+      moneyManager.setMessage(true, "Пользователь успешно добавлен!");
+    } else {
+      moneyManager.setMessage(false, response.error);
+    }
+  })
+ }
