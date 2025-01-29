@@ -59,3 +59,13 @@ moneyManager.conversionMoneyCallback = ({ fromCurrency, targetCurrency, fromAmou
 }
 
 //Перевод валюты
+moneyManager.sendMoneyCallback = ({ to, currency, amount }) => {
+  ApiConnector.transferMoney({ to, currency, amount }, (response) => {
+    if (response.success) {
+      ProfileWidget.showProfile(response.data);
+      moneyManager.setMessage(true, "Перевод средств успешно выполнен!");
+    } else {
+      moneyManager.setMessage(false, response.error);
+    }
+  })
+}
