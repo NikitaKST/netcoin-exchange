@@ -2,28 +2,28 @@
 const logoutButton = new LogoutButton();
 
 logoutButton.action = () => {
-  ApiConnector.logout(response => {
+  ApiConnector.logout((response) => {
     if (response.success) { // проверить на успех responce
       location.reload();
     }
-  })
-}
+  });
+};
 
 //Получение информации о пользователе
-ApiConnector.current((data) => {
-  if (data.success) {
-    ProfileWidget.showProfile(data.data);
+ApiConnector.current((response) => {
+  if (response.success) {
+    ProfileWidget.showProfile(response.data);
   }
-})
+});
 
 //Получение текущих курсов валюты
 const ratesBoard = new RatesBoard();
 
 function updateRates() {
-  ApiConnector.getStocks((data) => {
-    if (data.success) {
+  ApiConnector.getStocks((response) => {
+    if (response.success) {
       ratesBoard.clearTable();
-      ratesBoard.fillTable(data.data);
+      ratesBoard.fillTable(response.data);
     }
   }); 
 }
@@ -43,32 +43,32 @@ moneyManager.addMoneyCallback = (data) => {
     } else {
       moneyManager.setMessage(false, response.error); // Вывод ошибки от сервера
     }
-  })
-}
+  });
+};
 
 //Конвертирование валюты
-moneyManager.conversionMoneyCallback = ({ fromCurrency, targetCurrency, fromAmount }) => {
-  ApiConnector.convertMoney({ fromCurrency, targetCurrency, fromAmount }, (response) => {
+moneyManager.conversionMoneyCallback = (data) => {
+  ApiConnector.convertMoney(data, (response) => {
     if (response.success) {
       ProfileWidget.showProfile(response.data);
       moneyManager.setMessage(true, "Валюта успешно конвертирована!");
     } else {
       moneyManager.setMessage(false, response.error);
     }
-  })
-}
+  });
+};
 
 //Перевод валюты
-moneyManager.sendMoneyCallback = ({ to, currency, amount }) => {
-  ApiConnector.transferMoney({ to, currency, amount }, (response) => {
+moneyManager.sendMoneyCallback = (data) => {
+  ApiConnector.transferMoney(data, (response) => {
     if (response.success) {
       ProfileWidget.showProfile(response.data);
       moneyManager.setMessage(true, "Перевод средств успешно выполнен!");
     } else {
       moneyManager.setMessage(false, response.error);
     }
-  })
-}
+  });
+};
 
 //Работа с избранным FavoritesWidget. Начальный список избранного
 const favoritesWidget = new FavoritesWidget();
