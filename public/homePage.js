@@ -85,7 +85,6 @@ ApiConnector.getFavorites((response) => {
 //Добавление пользователя в список избранных
 favoritesWidget.addUserCallback = (data) => {
   ApiConnector.addUserToFavorites(data, (response) => {
-    console.log(`addUserToFavorites(data, (response)`, data, response);
     if (response.success) {
       favoritesWidget.clearTable();
       favoritesWidget.fillTable(response.data);
@@ -95,4 +94,20 @@ favoritesWidget.addUserCallback = (data) => {
       moneyManager.setMessage(false, response.error);
     }
   })
+ }
+
+ //Удаление пользователя из избранного
+ favoritesWidget.removeUserCallback = (userId) => {
+  ApiConnector.removeUserFromFavorites(userId, (response) =>{
+    console.log(`userId`, userId);
+    console.log(`response`, response);
+    if (response.success) {
+      favoritesWidget.clearTable();
+      favoritesWidget.fillTable(response.data);
+      moneyManager.updateUsersList(response.data);
+      moneyManager.setMessage(true, "Пользователь успешно удален!");
+    } else {
+      moneyManager.setMessage(false, response.error);
+    }
+  });
  }
