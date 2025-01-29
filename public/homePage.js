@@ -69,3 +69,17 @@ moneyManager.sendMoneyCallback = ({ to, currency, amount }) => {
     }
   })
 }
+
+//Работа с избранным FavoritesWidget. Начальный список избранного
+const favoritesWidget = new FavoritesWidget();
+
+ApiConnector.getFavorites((response) => {
+  console.log(`getFavorites responce`, response);
+  if (response.success) {
+    favoritesWidget.clearTable();
+    favoritesWidget.fillTable(response.data);
+    moneyManager.updateUsersList(response.data);
+  }
+});
+
+
