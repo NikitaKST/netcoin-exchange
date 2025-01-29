@@ -32,10 +32,9 @@ updateRates();
 
 setInterval(updateRates, 60000);
 
-//Операции с деньгами
+//Пополнение баланса
 const moneyManager = new MoneyManager();
 
-//Пополнение баланса
 moneyManager.addMoneyCallback = (data) => {
   ApiConnector.addMoney(data, (response) => {
     if (response.success) {
@@ -46,3 +45,17 @@ moneyManager.addMoneyCallback = (data) => {
     }
   })
 }
+
+//Конвертирование валюты
+moneyManager.conversionMoneyCallback = ({ fromCurrency, targetCurrency, fromAmount }) => {
+  ApiConnector.convertMoney({ fromCurrency, targetCurrency, fromAmount }, (response) => {
+    if (response.success) {
+      ProfileWidget.showProfile(response.data);
+      moneyManager.setMessage(true, "Валюта успешно конвертирована!");
+    } else {
+      moneyManager.setMessage(false, response.error);
+    }
+  })
+}
+
+//Перевод валюты
